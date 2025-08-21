@@ -41,7 +41,7 @@ const useStyles = createStyles((theme, params: { difficultyOffset: number }) => 
   },
   skillArea: {
     fill: 'transparent',
-    stroke: theme.fn.primaryColor(),
+    stroke: "#f8eada",
     strokeWidth: 8,
     r: 50,
     cx: 250,
@@ -56,7 +56,7 @@ const useStyles = createStyles((theme, params: { difficultyOffset: number }) => 
     },
   },
   indicator: {
-    stroke: 'red',
+    stroke: '#f22a19',
     strokeWidth: 16,
     fill: 'transparent',
     r: 50,

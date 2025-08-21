@@ -7,7 +7,7 @@ SetTimeout(1000, function()
     TriggerClientEvent('chat:addSuggestions', -1, commands)
 end)
 
-AddEventHandler('playerJoining', function()
+AddEventHandler('playerJoining', function(source)
     TriggerClientEvent('chat:addSuggestions', source, commands)
 end)
 

@@ -5,7 +5,7 @@ type OxCommandArguments = Record<string | number, string | number | boolean>;
 interface OxCommandParams {
   name: string;
   help?: string;
-  paramType?: 'number' | 'playerId' | 'string' | 'longString';
+  paramType?: 'number' | 'playerId' | 'string';
   optional?: boolean;
 }
 
@@ -24,7 +24,7 @@ setTimeout(() => {
   emitNet('chat:addSuggestions', -1, registeredCommmands);
 }, 1000);
 
-on('playerJoining', () => {
+on('playerJoining', (source: number) => {
   emitNet('chat:addSuggestions', source, registeredCommmands);
 });
 
@@ -53,10 +53,6 @@ function parseArguments(
         value = arg === 'me' ? source : +arg;
         if (!value || !DoesPlayerExist(value.toString())) value = false;
 
-        break;
-
-      case 'longString':
-        value = raw.substring(raw.indexOf(arg as string));
         break;
 
       default:

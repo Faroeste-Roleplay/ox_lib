@@ -27,10 +27,17 @@ const useStyles = createStyles((theme, params: { disabled?: boolean; readOnly?: 
   button: {
     height: 'fit-content',
     width: '100%',
+    borderRadius: 0,
+    fontWeight: 500,
     padding: 10,
+    backgroundColor: "#1F1F1F",
     '&:hover': {
-      backgroundColor: params.readOnly ? theme.colors.dark[6] : undefined,
+      // backgroundColor: params.readOnly ? theme.colors.dark[6] : undefined,
+      backgroundColor: "#C5C5C5",
       cursor: params.readOnly ? 'unset' : 'pointer',
+      "* > div" : {
+        color: "#1F1F1F",
+      }
     },
     '&:active': {
       transform: params.readOnly ? 'unset' : undefined,

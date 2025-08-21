@@ -5,7 +5,7 @@ local keepInput = IsNuiFocusKeepingInput()
 function lib.setNuiFocus(allowInput, disableCursor)
     keepInput = IsNuiFocusKeepingInput()
     SetNuiFocus(true, not disableCursor)
-    SetNuiFocusKeepInput(allowInput)
+    SetNuiFocusKeepInput(keepInput or allowInput)
 end
 
 function lib.resetNuiFocus()

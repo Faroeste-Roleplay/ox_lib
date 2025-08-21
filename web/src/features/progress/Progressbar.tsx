@@ -7,11 +7,15 @@ import type { ProgressbarProps } from '../../typings';
 
 const useStyles = createStyles((theme) => ({
   container: {
-    width: 350,
-    height: 45,
+    width: 300,
+    height: 20,
+    paddingInline: "10px",
     borderRadius: theme.radius.sm,
-    backgroundColor: theme.colors.dark[5],
+    // backgroundColor: theme.colors.dark[5],
     overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    position:"relative",
   },
   wrapper: {
     width: '100%',
@@ -23,24 +27,30 @@ const useStyles = createStyles((theme) => ({
     position: 'absolute',
   },
   bar: {
-    height: '100%',
-    backgroundColor: theme.colors[theme.primaryColor][theme.fn.primaryShade()],
+    height: '4px',
+    backgroundColor: '#f2f2f2',
+  },
+  barBg: {
+    position:"absolute",
+    height: '4px',
+    width: "94%",
+    backgroundColor: '#f2f2f270',
   },
   labelWrapper: {
     position: 'absolute',
     display: 'flex',
-    width: 350,
+    width: 300,
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
   },
   label: {
-    maxWidth: 350,
+    maxWidth: 300,
     padding: 8,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    fontSize: 20,
+    fontSize: 16,
     color: theme.colors.gray[3],
     textShadow: theme.shadows.sm,
   },
@@ -64,7 +74,7 @@ const Progressbar: React.FC = () => {
     <>
       <Box className={classes.wrapper}>
         <ScaleFade visible={visible} onExitComplete={() => fetchNui('progressComplete')}>
-          <Box className={classes.container}>
+          <Box className={`classes.container progressbar-bg ${classes.container}`}>
             <Box
               className={classes.bar}
               onAnimationEnd={() => setVisible(false)}
@@ -72,12 +82,15 @@ const Progressbar: React.FC = () => {
                 animation: 'progress-bar linear',
                 animationDuration: `${duration}ms`,
               }}
-            >
-              <Box className={classes.labelWrapper}>
+            />
+            <Box
+              className={classes.barBg}
+            />
+          </Box>
+          
+          <Box className={classes.labelWrapper}>
                 <Text className={classes.label}>{label}</Text>
               </Box>
-            </Box>
-          </Box>
         </ScaleFade>
       </Box>
     </>

@@ -1,4 +1,4 @@
-local service = GetConvar('ox:logger', 'datadog')
+local service = GetConvar('ox:logger', 'mongo')
 local buffer
 local bufferSize = 0
 
@@ -135,11 +135,13 @@ if service == 'datadog' then
     local key = GetConvar('datadog:key', ''):gsub("[\'\"]", '')
 
     if key ~= '' then
-        local endpoint = ('https://http-intake.logs.%s/api/v2/logs'):format(GetConvar('datadog:site', 'datadoghq.com'))
+        local hostSite = GetConvar('datadog:site', 'datadoghq.com')
+        local endpoint = ('https://http-intake.logs.%s/api/v2/logs'):format(hostSite)
 
         local headers = {
             ['Content-Type'] = 'application/json',
             ['DD-API-KEY'] = key,
+            ['DD-SITE'] = hostSite,
         }
 
         function lib.logger(source, event, message, ...)
@@ -171,6 +173,31 @@ if service == 'datadog' then
                 ddtags = formatTags(source, ... and string.strjoin(',', string.tostringall(...)) or nil),
             }
         end
+    end
+end
+
+if service == 'mongo' then
+    function lib.logger(source, event, message, ...)
+        if not buffer then
+            buffer = {}
+
+            SetTimeout(500, function()
+                TriggerEvent("server_logger",  buffer)
+                buffer = nil
+                bufferSize = 0
+            end)
+        end
+
+        bufferSize += 1
+        buffer[bufferSize] = {
+            hostname = hostname,
+            service = event,
+            message = message,
+            resource = cache.resource,
+            ddsource = tostring(source),
+            ddtags = formatTags(source, ... and string.strjoin(',', string.tostringall(...)) or nil),
+            date = os.date('%H:%M:%S - %d/%m/%y'),
+        }
     end
 end
 

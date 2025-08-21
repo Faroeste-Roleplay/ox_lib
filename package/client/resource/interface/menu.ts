@@ -27,7 +27,7 @@ interface MenuProps {
   onClose?: (keyPressed?: 'Escape' | 'Backspace') => void;
   onSelected?: ChangeFunction;
   onSideScroll?: ChangeFunction;
-  onCheck?: ChangeFunction;
+  onChecked?: ChangeFunction;
   cb?: ChangeFunction;
 }
 

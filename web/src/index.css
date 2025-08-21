@@ -6,6 +6,8 @@
 @import url("https://use.typekit.net/wxh5ury.css");
 @import url("https://use.typekit.net/qgr5ebd.css");
 
+@import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Sanchez:ital@0;1&display=swap');
+
 html {
   color-scheme: normal !important;
 }
@@ -13,8 +15,8 @@ html {
 body {
   background: none !important;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  font-family: "Hepta Slab", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
@@ -61,4 +63,102 @@ code {
 
 .toast-error {
   background-color: #c0392b;
+}
+
+.mantine-Progress-root {
+  background-color: transparent;
+  background: url(./assets/img/progress_bar.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* .mantine-Progress-bar {
+  background-color: transparent;
+  background: url(./assets/img/selection_box_bg_1d.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+} */
+
+.mroot {
+  background-color: transparent;
+  background: url(./assets/img/selection_box_bg_1d.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.mantine-Modal-modal {
+  background-color: transparent;
+  background: url(./assets/img/background.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 30px 30px;
+}
+
+.mantine-Button-root {
+  background-color: transparent;
+  background: url(./assets/img/selection_box_bg_1d.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.mantine-Button-root[data-disabled] {
+  background-color: transparent;
+  background: url(./assets/img/selection_box_bg_1d.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.9
+}
+
+.mantine-Button-root:hover {
+  background-color: transparent;
+  background: url(./assets/img/selection_box_bg_1d_gray.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: #181818;
+}
+
+.mantine-HoverCard-dropdown {
+  background-color: transparent;
+  background: url(./assets/img/hud_menu_4a.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.small-button {
+  background-color: transparent;
+  background: url(./assets/img/hud_menu_grid.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.small-button:hover {
+  background-color: transparent;
+  background: url(./assets/img/hud_menu_grid_gray.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: #181818;
+  fill: #181818;
+}
+
+.small-button:hover svg {
+  color: #181818;
+  fill: #181818;
+}
+
+.progressbar-bg {
+  background-color: transparent;
+  background: url(./assets/img/progress_bar_2.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: #181818;
+  fill: #181818;
+}
+
+.mantine-Input-input {
+  /* background-color: transparent; */
+  background: #181818;
+  border-radius: 0;
+  border: 0;
+  /* background-size: 100% 100%; */
+  /* background-repeat: no-repeat; */
 }

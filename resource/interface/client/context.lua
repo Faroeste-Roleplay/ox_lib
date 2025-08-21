@@ -45,13 +45,13 @@ local function closeContext(_, cb, onExit)
 end
 
 ---@param id string
-function lib.showContext(id)
+function lib.showContext(id, withFocus)
     if not contextMenus[id] then error('No context menu of such id found.') end
 
     local data = contextMenus[id]
     openContextMenu = id
 
-    lib.setNuiFocus(false)
+    lib.setNuiFocus(withFocus)
 
     SendNuiMessage(json.encode({
         action = 'showContext',

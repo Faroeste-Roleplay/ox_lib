@@ -1,6 +1,10 @@
 ---@diagnostic disable: invisible
 local getinfo = debug.getinfo
 
+if not getinfo(1, 'S').source:match('^@@ox_lib') then
+    lib.print.warn('ox_lib\'s class module is experimental and may break without warning.')
+end
+
 ---Ensure the given argument or property has a valid type, otherwise throwing an error.
 ---@param id number | string
 ---@param var any
@@ -55,8 +59,10 @@ local function void() return '' end
 ---@return T
 function mixins.new(class, ...)
     local constructor = getConstructor(class)
-    local private = {}
-    local obj = setmetatable({ private = private }, class)
+
+    local obj = setmetatable({
+        private = {}
+    }, class)
 
     if constructor then
         local parent = class
@@ -73,8 +79,8 @@ function mixins.new(class, ...)
 
     rawset(obj, 'super', nil)
 
-    if private ~= obj.private or next(obj.private) then
-        private = table.clone(obj.private)
+    if next(obj.private) then
+        local private = table.clone(obj.private)
 
         table.wipe(obj.private)
         setmetatable(obj.private, {
@@ -126,10 +132,8 @@ end
 
 ---Creates a new class.
 ---@generic S : OxClass
----@generic T : string
----@param name `T`
+---@param name string
 ---@param super? S
----@return `T`
 function lib.class(name, super)
     assertType(1, name, 'string')
 

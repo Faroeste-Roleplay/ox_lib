@@ -80,7 +80,6 @@ if cache.game == 'redm' then return end
 ---@field modLivery? number
 ---@field modRoofLivery? number
 ---@field modLightbar? number
----@field livery? number
 ---@field windows? number[]
 ---@field doors? number[]
 ---@field tyres? table<number | string, 1 | 2>
@@ -100,29 +99,20 @@ RegisterNetEvent('ox_lib:setVehicleProperties', function(netid, data)
     end
 end)
 
-AddStateBagChangeHandler('ox_lib:setVehicleProperties', '', function(bagName, _, value)
+--[[ Alternative to NetEvent - disabled (at least for now?)
+AddStateBagChangeHandler('setVehicleProperties', '', function(bagName, _, value)
     if not value or not GetEntityFromStateBagName then return end
 
-    while NetworkIsInTutorialSession() do Wait(0) end
+    local entity = GetEntityFromStateBagName(bagName)
+    local networked = not bagName:find('localEntity')
 
-    local entityExists, entity = pcall(lib.waitFor, function()
-        local entity = GetEntityFromStateBagName(bagName)
+    if networked and NetworkGetEntityOwner(entity) ~= cache.playerId then return end
 
-        if entity > 0 then return entity end
-    end, '', 10000)
-
-    if not entityExists then return end
-
-    lib.setVehicleProperties(entity, value)
-    Wait(200)
-
-    -- this delay and second-setting of vehicle properties hopefully counters the
-    -- weird sync/ownership/shitfuckery when setting props on server-side vehicles
-    if NetworkGetEntityOwner(entity) == cache.playerId then
-        lib.setVehicleProperties(entity, value)
-        Entity(entity).state:set('ox_lib:setVehicleProperties', nil, true)
+    if lib.setVehicleProperties(entity, value) then
+        Entity(entity).state:set('setVehicleProperties', nil, true)
     end
 end)
+]]
 
 local gameBuild = GetGameBuildNumber()
 
@@ -150,6 +140,13 @@ function lib.getVehicleProperties(vehicle)
             if DoesExtraExist(vehicle, i) then
                 extras[i] = IsVehicleExtraTurnedOn(vehicle, i) and 0 or 1
             end
+        end
+
+        local modLiveryCount = GetVehicleLiveryCount(vehicle)
+        local modLivery = GetVehicleLivery(vehicle)
+
+        if modLiveryCount == -1 or modLivery == -1 then
+            modLivery = GetVehicleMod(vehicle, 48)
         end
 
         local damage = {
@@ -267,10 +264,9 @@ function lib.getVehicleProperties(vehicle)
             modTank = GetVehicleMod(vehicle, 45),
             modWindows = GetVehicleMod(vehicle, 46),
             modDoorR = GetVehicleMod(vehicle, 47),
-            modLivery = GetVehicleMod(vehicle, 48),
+            modLivery = modLivery,
             modRoofLivery = GetVehicleRoofLivery(vehicle),
             modLightbar = GetVehicleMod(vehicle, 49),
-            livery = GetVehicleLivery(vehicle),
             windows = damage.windows,
             doors = damage.doors,
             tyres = damage.tyres,
@@ -343,7 +339,7 @@ function lib.setVehicleProperties(vehicle, props, fixVehicle)
             ClearVehicleCustomPrimaryColour(vehicle)
             SetVehicleColours(vehicle, props.color1 --[[@as number]], colorSecondary --[[@as number]])
         else
-            if props.paintType1 then SetVehicleModColor_1(vehicle, props.paintType1, 0, props.pearlescentColor or 0) end
+            if props.paintType1 then SetVehicleModColor_1(vehicle, props.paintType1, colorPrimary, pearlescentColor) end
 
             SetVehicleCustomPrimaryColour(vehicle, props.color1[1], props.color1[2], props.color1[3])
         end
@@ -354,7 +350,7 @@ function lib.setVehicleProperties(vehicle, props, fixVehicle)
             ClearVehicleCustomSecondaryColour(vehicle)
             SetVehicleColours(vehicle, props.color1 or colorPrimary --[[@as number]], props.color2 --[[@as number]])
         else
-            if props.paintType2 then SetVehicleModColor_2(vehicle, props.paintType2, 0) end
+            if props.paintType2 then SetVehicleModColor_2(vehicle, props.paintType2, colorSecondary) end
 
             SetVehicleCustomSecondaryColour(vehicle, props.color2[1], props.color2[2], props.color2[3])
         end
@@ -618,6 +614,7 @@ function lib.setVehicleProperties(vehicle, props, fixVehicle)
 
     if props.modLivery then
         SetVehicleMod(vehicle, 48, props.modLivery, false)
+        SetVehicleLivery(vehicle, props.modLivery)
     end
 
     if props.modRoofLivery then
@@ -626,10 +623,6 @@ function lib.setVehicleProperties(vehicle, props, fixVehicle)
 
     if props.modLightbar then
         SetVehicleMod(vehicle, 49, props.modLightbar, false)
-    end
-
-    if props.livery then
-        SetVehicleLivery(vehicle, props.livery)
     end
 
     if props.bulletProofTyres ~= nil then

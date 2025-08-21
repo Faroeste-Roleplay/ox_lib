@@ -11,7 +11,8 @@ interface Props {
 
 const useStyles = createStyles((theme, params: { canClose?: boolean }) => ({
   button: {
-    borderRadius: 4,
+    borderRadius: 0,
+    backgroundColor: "#1F1F1F",
     flex: '1 15%',
     alignSelf: 'stretch',
     height: 'auto',
@@ -33,7 +34,7 @@ const HeaderButton: React.FC<Props> = ({ icon, canClose, iconSize, handleClick }
   return (
     <Button
       variant="default"
-      className={classes.button}
+      className={`${classes.button} small-button`}
       classNames={{ label: classes.label, root: classes.root }}
       disabled={canClose === false}
       onClick={handleClick}

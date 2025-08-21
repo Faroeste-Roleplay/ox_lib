@@ -58,7 +58,7 @@ export const debugContext = () => {
             progress: 80,
             icon: 'car-side',
             metadata: [{ label: 'Durability', value: '80%' }],
-            colorScheme: 'blue',
+            colorScheme: 'red',
           },
           {
             title: 'Menu button',

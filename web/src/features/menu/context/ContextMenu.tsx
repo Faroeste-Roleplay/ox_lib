@@ -17,9 +17,10 @@ const useStyles = createStyles((theme) => ({
   container: {
     position: 'absolute',
     top: '15%',
-    right: '25%',
+    right: '10%',
     width: 320,
     height: 580,
+
   },
   header: {
     justifyContent: 'center',
@@ -28,12 +29,16 @@ const useStyles = createStyles((theme) => ({
     gap: 6,
   },
   titleContainer: {
-    borderRadius: 4,
+    borderRadius: 0,
     flex: '1 85%',
-    backgroundColor: theme.colors.dark[6],
+    backgroundColor: "transparent",
+    background: "url(assets/img/selection_box_bg_1d.png)",
+    backgroundSize: "100% 100%",
+    backgroundRepeat: "no-repeat",
   },
   titleText: {
     color: theme.colors.dark[0],
+    fontWeight: 800,
     padding: 6,
     textAlign: 'center',
   },
@@ -91,7 +96,7 @@ const ContextMenu: React.FC = () => {
           {contextMenu.menu && (
             <HeaderButton icon="chevron-left" iconSize={16} handleClick={() => openMenu(contextMenu.menu)} />
           )}
-          <Box className={classes.titleContainer}>
+          <Box className={`${classes.titleContainer} mroot`}>
             <Text className={classes.titleText}>
               <ReactMarkdown components={MarkdownComponents}>{contextMenu.title}</ReactMarkdown>
             </Text>
